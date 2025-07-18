@@ -1,13 +1,14 @@
-import 'package:day_21_state_management/data/model/province_response.dart';
+import 'package:day_21_state_management/presentation/provider/province_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProvinceList extends StatelessWidget {
-  const ProvinceList({super.key, required this.provinceData});
-
-  final List<ProvinceResponse> provinceData;
+  const ProvinceList({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final provinceData = context.watch<ProvinceProvider>().provinces;
+
     return ListView.separated(
       shrinkWrap: true,
       padding: EdgeInsets.all(16),
