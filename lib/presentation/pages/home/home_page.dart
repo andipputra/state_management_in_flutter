@@ -1,14 +1,16 @@
+import 'package:day_21_state_management/presentation/inherited_widget/counter_inherited_widget.dart';
 import 'package:day_21_state_management/presentation/pages/province/province_page.dart';
 import 'package:flutter/material.dart';
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-  final String title;
+class HomePage extends StatefulWidget {
+  final Widget child;
+  const HomePage({super.key, required this.child});
+
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _HomePageState extends State<HomePage> {
   int _counter = 0;
 
   void _incrementCounter() {
@@ -19,10 +21,26 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    return CounterInheritedWidget(
+      counter: _counter,
+      increment: _incrementCounter,
+      child: widget.child,
+    );
+  }
+}
+
+class HomeView extends StatelessWidget {
+  const HomeView({super.key, required this.title});
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    final counterWidget = CounterInheritedWidget.of(context);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        title: Text(title),
       ),
       body: Center(
         child: Column(
@@ -30,21 +48,23 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             const Text('You have pushed the button this many times:'),
             Text(
-              '$_counter',
+              '${counterWidget.counter}',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             SizedBox(height: 48),
             ElevatedButton(
-              onPressed: () => Navigator.of(
-                context,
-              ).push(MaterialPageRoute(builder: (context) => ProvincePage())),
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => ProvincePage(child: ProvinceView()),
+                ),
+              ),
               child: const Text('Redirect to province page'),
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: counterWidget.increment,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),

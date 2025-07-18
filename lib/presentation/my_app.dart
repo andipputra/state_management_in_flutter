@@ -12,7 +12,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: HomePage(
+        child: const HomeView(title: 'State Management Example'),
+      ),
     );
   }
 }
