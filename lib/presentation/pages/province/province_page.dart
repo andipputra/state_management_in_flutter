@@ -1,6 +1,7 @@
 import 'package:day_21_state_management/data/model/province_response.dart';
 import 'package:day_21_state_management/data/repository/data_repository.dart';
 import 'package:day_21_state_management/presentation/inherited_widget/province_inherited_widget.dart';
+import 'package:day_21_state_management/presentation/pages/province/widgets/province_count.dart';
 import 'package:day_21_state_management/presentation/pages/province/widgets/province_list.dart';
 import 'package:flutter/material.dart';
 
@@ -68,7 +69,12 @@ class ProvinceView extends StatelessWidget {
       appBar: AppBar(title: const Text('Province Page')),
       body: provinceInheritedWidget.isLoading == true
           ? const Center(child: CircularProgressIndicator())
-          : ProvinceList(),
+          : Column(
+              children: [
+                ProvinceCount(),
+                Expanded(child: ProvinceList()),
+              ],
+            ),
     );
   }
 }

@@ -13,7 +13,6 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
       home: HomePage(
-        child: const HomeView(title: 'State Management Example'),
       ),
     );
   }
