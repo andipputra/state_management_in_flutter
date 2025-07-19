@@ -17,4 +17,14 @@ class ProvinceResponse {
       'name': name,
     };
   }
+
+  ProvinceResponse copyWith({
+    String? id,
+    String? name,
+  }) {
+    return ProvinceResponse(
+      id: id ?? this.id,
+      name: name ?? this.name,
+    );
+  }
 }

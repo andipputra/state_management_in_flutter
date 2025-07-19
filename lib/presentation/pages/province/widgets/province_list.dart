@@ -7,7 +7,7 @@ class ProvinceList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provinceData = context.watch<ProvinceProvider>().provinces;
+    final provinceData = context.watch<ProvinceProvider>().state.provinces;
 
     return ListView.separated(
       shrinkWrap: true,

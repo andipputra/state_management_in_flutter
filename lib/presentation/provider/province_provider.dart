@@ -2,30 +2,54 @@ import 'package:day_21_state_management/data/model/province_response.dart';
 import 'package:day_21_state_management/data/repository/data_repository.dart';
 import 'package:flutter/material.dart';
 
-class ProvinceProvider extends ChangeNotifier {
-  List<ProvinceResponse> _provinces = [];
-  bool _isLoading = false;
-  String? _errorMessage;
+class ProvinceState {
+  final bool isLoading;
+  final List<ProvinceResponse> provinces;
+  final String? errorMessage;
 
-  List<ProvinceResponse> get provinces => _provinces;
-  bool get isLoading => _isLoading;
-  String? get errorMessage => _errorMessage;
+  ProvinceState({
+    this.isLoading = false,
+    required this.provinces,
+    this.errorMessage,
+  });
+
+  ProvinceState copyWith({
+    bool? isLoading,
+    List<ProvinceResponse>? provinces,
+    String? errorMessage,
+  }) {
+    return ProvinceState(
+      isLoading: isLoading ?? this.isLoading,
+      provinces: provinces ?? this.provinces,
+      errorMessage: errorMessage ?? this.errorMessage,
+    );
+  }
+}
+
+class ProvinceProvider extends ChangeNotifier {
+  final DataRepository repository;
+  ProvinceProvider({required this.repository});
+
+  // List<ProvinceResponse> _provinces = [];
+  // bool _isLoading = false;
+  // String? _errorMessage;
+  ProvinceState state = ProvinceState(provinces: []);
+
+  // List<ProvinceResponse> get provinces => state.provinces;
+  // bool get isLoading => state.isLoading;
+  // String? get errorMessage => state.errorMessage;
 
   Future<void> fetchProvinces() async {
-    _isLoading = true;
+    state = state.copyWith(isLoading: true);
     notifyListeners();
     try {
-      final repository = DataRepository();
-
       final response = await repository.fetchProvinces();
 
-      _provinces = response;
-      notifyListeners();
+      state = state.copyWith(provinces: response);
     } catch (e) {
-      _errorMessage = e.toString();
-      notifyListeners();
+      state = state.copyWith(errorMessage: e.toString());
     } finally {
-      _isLoading = false;
+      state = state.copyWith(isLoading: false);
       notifyListeners();
     }
   }

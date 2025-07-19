@@ -9,4 +9,11 @@ class CounterProvider extends ChangeNotifier {
     _counter++;
     notifyListeners();
   }
+
+  void decrement() {
+    if (counter <= 0) return;
+
+    _counter--;
+    notifyListeners();
+  }
 }

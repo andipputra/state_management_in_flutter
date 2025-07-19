@@ -1,5 +1,7 @@
+import 'package:day_21_state_management/data/repository/data_repository.dart';
 import 'package:day_21_state_management/presentation/pages/province/province_page.dart';
 import 'package:day_21_state_management/presentation/provider/counter_provider.dart';
+import 'package:day_21_state_management/presentation/provider/province_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -25,9 +27,17 @@ class MyHomePage extends StatelessWidget {
             ),
             SizedBox(height: 48),
             ElevatedButton(
-              onPressed: () => Navigator.of(
-                context,
-              ).push(MaterialPageRoute(builder: (context) => ProvincePage())),
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => ChangeNotifierProvider(
+                    create: (context) => ProvinceProvider(
+                      repository: context.read<DataRepository>(),
+                    ),
+                    lazy: true,
+                    child: ProvincePage(),
+                  ),
+                ),
+              ),
               child: const Text('Redirect to province page'),
             ),
           ],

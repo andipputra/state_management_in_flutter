@@ -26,7 +26,7 @@ class _ProvincePageState extends State<ProvincePage> {
 
     return Scaffold(
       appBar: AppBar(title: const Text('Province Page')),
-      body: provider.isLoading
+      body: provider.state.isLoading
           ? const Center(child: CircularProgressIndicator())
           : ProvinceList(),
     );
