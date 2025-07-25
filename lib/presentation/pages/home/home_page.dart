@@ -1,37 +1,44 @@
+import 'package:day_21_state_management/presentation/bloc/counter_bloc/counter_bloc.dart';
 import 'package:day_21_state_management/presentation/pages/province/province_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class MyHomePage extends StatefulWidget {
+class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key, required this.title});
   final String title;
+
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  Widget build(BuildContext context) {
+    return BlocProvider<CounterBloc>(
+      create: (context) => CounterBloc(),
+      child: MyHomePageView(title: title),
+    );
+  }
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+class MyHomePageView extends StatelessWidget {
+  const MyHomePageView({super.key, required this.title});
+  final String title;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        title: Text(title),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+            BlocBuilder<CounterBloc, int>(
+              builder: (context, counter) {
+                return Text(
+                  '$counter',
+                  style: Theme.of(context).textTheme.headlineMedium,
+                );
+              },
             ),
             SizedBox(height: 48),
             ElevatedButton(
@@ -44,7 +51,9 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: () {
+          context.read<CounterBloc>().add(CounterIncrement());
+        },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),
