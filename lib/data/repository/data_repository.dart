@@ -2,19 +2,19 @@ import 'package:day_21_state_management/data/model/province_response.dart';
 import 'package:dio/dio.dart';
 
 class DataRepository {
-  static const String _baseUrl = 'https://open-api.my.id/api/wilayah';
-  final Dio _dio;
+  final Dio dio;
 
-  DataRepository({Dio? dio})
-      : _dio = dio ?? Dio(BaseOptions(baseUrl: _baseUrl));
+  DataRepository({required this.dio});
 
   Future<List<ProvinceResponse>> fetchProvinces() async {
     try {
-      final response = await _dio.get('/provinces');
+      final response = await dio.get('/provinces');
       if (response.statusCode == 200 && response.data is List) {
         final data = response.data as List;
         return data
-            .map((item) => ProvinceResponse.fromJson(item as Map<String, dynamic>))
+            .map(
+              (item) => ProvinceResponse.fromJson(item as Map<String, dynamic>),
+            )
             .toList();
       }
       throw Exception('Failed to load provinces');

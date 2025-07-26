@@ -1,4 +1,5 @@
 import 'package:day_21_state_management/presentation/bloc/counter_bloc/counter_bloc.dart';
+import 'package:day_21_state_management/presentation/bloc/counter_cubit/counter_cubit.dart';
 import 'package:day_21_state_management/presentation/pages/province/province_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,8 +10,11 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<CounterBloc>(
-      create: (context) => CounterBloc(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<CounterBloc>(create: (context) => CounterBloc()),
+        BlocProvider<CounterCubit>(create: (context) => CounterCubit()),
+      ],
       child: MyHomePageView(title: title),
     );
   }
@@ -40,6 +44,17 @@ class MyHomePageView extends StatelessWidget {
                 );
               },
             ),
+            // BlocSelector<CounterBloc, int, int>(
+            //   selector: (state) => state % 2 == 0 ? state ~/ 2 : state,
+            //   builder: (context, state) => Text(
+            //     '$state',
+            //     style: Theme.of(context).textTheme.headlineMedium,
+            //   ),
+            // ),
+            Text(
+                '${context.watch<CounterCubit>().state}',
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
             SizedBox(height: 48),
             ElevatedButton(
               onPressed: () => Navigator.of(
@@ -53,6 +68,7 @@ class MyHomePageView extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           context.read<CounterBloc>().add(CounterIncrement());
+          context.read<CounterCubit>().increment();
         },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
