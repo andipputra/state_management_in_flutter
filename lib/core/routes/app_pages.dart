@@ -14,10 +14,27 @@ class AppPages {
     ),
     GetPage(
       name: ProvincePage.routeName,
-      page: () => const ProvincePage(),
+      page: () {
+        final argument = Get.arguments as Map<String, dynamic>?;
+
+        final title = argument?['title'];
+
+        return ProvincePage(title: title,);
+      },
       binding: ProvinceBinding(),
       transition: Transition.circularReveal,
       transitionDuration: const Duration(seconds: 1),
     ),
+    // GetPage(name: '/product', page: () => Product(), children: [
+    //   GetPage(name: '/:id', page: (){
+    //     final parameters = Get.parameters['id'];
+
+    //     if(parameters != null){
+    //       return ProductDetail(parameters);
+    //     }
+
+    //     return ProductNotFound();
+    //   }),
+    // ]),
   ];
 }
